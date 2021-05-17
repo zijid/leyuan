@@ -1,8 +1,8 @@
 <template>
     <div>
-        <lyheader/>
+        <lyheader/> 
         <lyintroduce/>
-        <lyfooter/>
+        <lyfooter :bg="footer.bgColor" :color="footer.color"/>
     </div>
 
 </template>
@@ -13,24 +13,18 @@ import lyintroduce from '../public/introduce.vue'
 
 export default {
     name:'index',
+    data() {
+      return {
+        footer:{bgColor:"#303133",color:"#fff"}
+      };
+    },
     components:{
         lyheader,
         lyintroduce,
         lyfooter
     },
     methods:{
-        readT:function(){
-            axios.get('/static/user.json')
-            .then(response => {
-            console.log(response.data.inio)
-            })
-            .catch(error => {
-            console.log(error)
-            })
-        },
-        add:function(){
-            this.$store.commit('aa')
-        }
+        
     }
 }
 </script>

@@ -2,6 +2,7 @@ import index from '../components/index/index'
 import noFile from '../components/nofile/nofile'
 import login from '../components/public/login'
 import reg from '../components/public/reg'
+import timeMBA from '../components/timeMBA/timeMBA'
 export default new VueRouter({
     mode: 'history',
     routes:[
@@ -19,6 +20,11 @@ export default new VueRouter({
             path:'/reg',
             name:'reg',
             component:reg
+        },
+        {
+            path:'/timeMBA',
+            name:'timeMBA',
+            component:timeMBA
         },
         {
             path:'*',

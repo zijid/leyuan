@@ -1,8 +1,8 @@
 const store = new Vuex.Store({
     state: {
-      count: 123,
       list:{},
-      user:{}
+      user:{},
+      regMsg:{msg:undefined}
     },
     mutations: {
       addList(state,data){
@@ -10,6 +10,9 @@ const store = new Vuex.Store({
       },
       addUser(state,data){
         state.user=data
+      },
+      regMsg(state,data){
+        state.regMsg=data
       }
     }
   })
