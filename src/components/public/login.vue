@@ -4,7 +4,7 @@
       <el-form :model="form" status-icon :rules="rules">
         <h1>登录</h1>        
         <el-form-item prop="user">
-          <el-input label-position="left" v-model="form.user" placeholder="请输入账号"><template slot="prepend">账号</template></el-input>
+          <el-input label-position="left" v-model="form.user" placeholder="请输入账号" @change="getUser"><template slot="prepend">账号</template></el-input>
         </el-form-item>
         <el-form-item prop="pass">
           <el-input placeholder="请输入密码" type="password" show-password v-model="form.pass" ><template slot="prepend">密码</template></el-input>
@@ -56,15 +56,34 @@ export default {
       }
   },
   methods:{
+    getUser(){
+      axios.get('/repeatName')
+      .then(response => {
+        this.$store.commit("addUser",response.data)
+      })
+      .catch(error => {
+        return error
+      })
+    },
     login(){
-      let users=this.$store.state.user;
-      for(var a=0;a<users.length;a++){
-       if(users[a].name==this.form.user&&users[a].pass==this.form.pass)
-          console.log(users[a])
-
+      let users=this.$store.state.user,thia=this,state=this.$store.state;
+      for(let id in users){
+        let formUser=this.form.user;
+        if(users[id].userName==formUser||users[id].userId==formUser){
+          axios.post('/loginPas',{userName:formUser,password:this.form.pass,userId:formUser})
+          .then(response => {
+            thia.$store.commit("addToken",response.data)
+            axios.post('/creater_log',{userId:thia.form.user,msg:"登录",date:Date.now()})
+            confirm(`欢迎你\n账号:${thia.form.user}`)
+            thia.form.user=""
+            thia.$router.push("/")
+          })
+          .catch(error => {
+            return error
+          })
+      }
      }
     }
-
   },
   mounted(){
       axios.get('/repeatName')

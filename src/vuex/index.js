@@ -1,7 +1,8 @@
 const store = new Vuex.Store({
     state: {
-      list:{},
-      user:{},
+      list:"",
+      user:"",
+      Token:"",
       regMsg:{msg:undefined}
     },
     mutations: {
@@ -13,6 +14,13 @@ const store = new Vuex.Store({
       },
       regMsg(state,data){
         state.regMsg=data
+      },
+      addToken(state,data){
+        state.Token=data
+      },
+      clearLogin(state){
+        state.Token=""
+        state.user=""
       }
     }
   })

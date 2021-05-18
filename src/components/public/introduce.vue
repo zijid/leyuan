@@ -49,8 +49,7 @@ export default {
     },
     computed:{
         list(){
-            window.a=store.state.list
-            return store.state.list;
+            return this.$store.state.list;
         }
     },
     methods:{
