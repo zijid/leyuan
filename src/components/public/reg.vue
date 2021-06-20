@@ -22,9 +22,7 @@
 <script>
 export default {
   computed:{
-    aaaaa(){
-      
-    }
+    
   },
   data() {
       let is_user = (rule, value, callback) => {
@@ -91,7 +89,7 @@ export default {
 									thia.form.user=""
 									thia.form.pass=""
 									thia.form.email=""
-									thia.$router.push("/")
+									thia.$router.back(-1)
 								},500)
 							})
 							.catch(error => {

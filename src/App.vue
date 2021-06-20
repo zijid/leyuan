@@ -1,6 +1,6 @@
 <template class="bodyMargin">
   <div id="app">
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -40,6 +40,9 @@ export default {
       })
     }
   },
+  mounted(){
+    console.log(this.$router)
+  }
 }
 </script>
 

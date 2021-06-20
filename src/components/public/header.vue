@@ -8,7 +8,7 @@
                 <span class="res" @click="res">注册</span>
             </div>
             <div id="login" v-else>
-                <span class="login">{{userName}}</span>
+                <span class="login">{{user.userName}}</span>
                 <span class="res" @click="esc">退出登录</span>
             </div>
         </el-col>
@@ -34,20 +34,12 @@ export default {
         token(){
             return this.$store.state.Token.state
         },
-        userName(){
-            return this.$store.state.user["userName"]
+        user(){
+            return {userName:this.$store.state.user["userName"],signature:this.$store.state.user["signature"]}
         }
     },
     mounted(){
-        if(this.$store.state.Token["state"]==200){
-            axios.post('/userName',{token:this.$store.state.Token.token})
-            .then(response => {
-            this.$store.commit("addUser",response.data)
-            })
-            .catch(error => {
-                return error
-            })
-        }
+        
     }
 }
 </script>

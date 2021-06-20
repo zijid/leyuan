@@ -4,7 +4,7 @@
         <el-col :span="6"><div id="left">
             
             <div>
-                <div @click="a">网站日志</div>
+                <div>网站日志</div>
                 <ul id="rz">
                     <li v-for="data in list" :key="data.id" >
                         <el-row align="middle" type="flex">
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import store from '../../vuex'
 import box from './box.vue'
 export default {
     name:'introduce',
@@ -53,9 +52,7 @@ export default {
         }
     },
     methods:{
-        a(){
-            console.log(store.state)
-        }
+
     }
     
 }

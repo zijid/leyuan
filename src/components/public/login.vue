@@ -3,7 +3,7 @@
     <div id="login">
       <el-form :model="form" status-icon :rules="rules">
         <h1>登录</h1>        
-        <el-form-item prop="user">
+        <el-form-item prop="user" :error="errorMsg">
           <el-input label-position="left" v-model="form.user" placeholder="请输入账号" @change="getUser"><template slot="prepend">账号</template></el-input>
         </el-form-item>
         <el-form-item prop="pass">
@@ -25,11 +25,24 @@ export default {
   },
   data() {
       let is_user = (rule, value, callback) => {
-        if((value.length>0)&&(value.length<15)&&(/^[A-Za-z0-9]+$/.test(value))){
-            callback()
-        }else{
-          callback(new Error("请输入正确账号，账号由1~14字母和数字组成"))
-        }
+        let users=this.$store.state.user,isUser=false;
+          for(let id in users){
+          let formUser=this.form.user;
+            if(users[id].userName==formUser||users[id].userId==formUser){
+              isUser=true
+            }
+          }
+          if((value.length>0)&&(value.length<15)&&(/^[A-Za-z0-9]+$/.test(value))){
+            if(!isUser){
+              callback(new Error("账号不存在！"))
+            }else {
+              callback()
+            }
+          }
+          else{
+            callback(new Error("请输入正确账号，账号由1~14字母和数字组成"))
+            
+          }
       };
       let is_pass = (rule, value, callback) => {
         if((value.length>0)&&(value.length<21)&&(/^[A-Za-z0-9]+$/.test(value))){
@@ -52,11 +65,13 @@ export default {
           pass: [
             { validator: is_pass, trigger: 'blur' }
           ]
-        }
+        },
+        errorMsg:""
       }
   },
   methods:{
     getUser(){
+      this.errorMsg=""
       axios.get('/repeatName')
       .then(response => {
         this.$store.commit("addUser",response.data)
@@ -70,17 +85,34 @@ export default {
       for(let id in users){
         let formUser=this.form.user;
         if(users[id].userName==formUser||users[id].userId==formUser){
+          this.errorMsg=""
           axios.post('/loginPas',{userName:formUser,password:this.form.pass,userId:formUser})
           .then(response => {
-            thia.$store.commit("addToken",response.data)
-            axios.post('/creater_log',{userId:thia.form.user,msg:"登录",date:Date.now()})
-            confirm(`欢迎你\n账号:${thia.form.user}`)
-            thia.form.user=""
-            thia.$router.push("/")
+            if(!response.data.err){
+              thia.$store.commit("addToken",response.data)
+              axios.post('/creater_log',{userId:thia.form.user,msg:"登录",date:Date.now()})
+              //confirm(`欢迎你\n账号:${thia.form.user}`)
+              thia.form.user=""
+              if(this.$store.state.Token["state"]==200){
+                axios.post('/userName',{token:this.$store.state.Token.token})
+                .then(response => {
+                this.$store.commit("addUser",response.data)
+              })
+            .catch(error => {
+              
+              confirm(`${error}`)
+                return error
+            })
+        }
+              thia.$router.back(-1)
+            }else{
+              confirm(`${response.data.msg}`)
+            }
           })
           .catch(error => {
             return error
           })
+          break;
       }
      }
     }
