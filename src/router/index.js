@@ -6,6 +6,10 @@ import timeMBA from '../components/timeMBA/timeMBA'
 import timeMBAindex from '../components/timeMBA/index'
 import grzx from '../components/timeMBA/grzx'
 import phb from '../components/timeMBA/phb'
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 export default new VueRouter({
     mode: 'history',//要在本地访问路由 删除
     routes:[

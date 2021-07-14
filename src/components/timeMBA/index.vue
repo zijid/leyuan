@@ -21,6 +21,76 @@
 
 <script>
 export default {
+    data(){
+        return {
+            items:[],
+            thisInfo:[]
+        }
+    },
+    mounted(){
+        axios.get("/phb").then(
+            (Data)=>{
+                let data=Data.data;//data=[]第一层没个用户的全部信息
+                let userInfoAll=[]
+                let thisTiem=new Data()
+                thisTiem.getDay()
+                thisTiem.setHours(0)
+                thisTiem.setMinutes(0)
+                thisTiem.setSeconds(0)
+                thisTiem.setMilliseconds(0)
+
+                let oneDay=1000*60*60*24//一天的时间
+                let day=thisTiem.getDay()//0 星期天
+                if(day>0){
+                    
+
+                }else{
+                    thisTiem
+                }
+
+                // let day={min:"",max:""}//这周时间范围
+                data.forEach(user => {
+                    let userInfo={
+                        userId:user[0].userId,
+                        userName:user[0].userName,
+                        list:[],
+                        total:0
+                    }
+                    for(let info of user){
+                        let studyTime=info.timeEnd-info.timeStart
+                        userInfo.total+=studyTime
+                        userInfo.list.push(
+                            {
+                                timeEnd:info.timeEnd,
+                                timeStart:info.timeStart,
+                                studyTime,
+                                title:info.title,
+                                things:info.things
+                            }
+                        )
+                    }
+                    userInfoAll.push(userInfo)
+                });
+                for(let a=0;a<userInfoAll.length;a++){
+                    userInfoAll.sort((a,b)=>a.total<b.total?1:-1)
+                }
+                console.log(userInfoAll)
+                for(let a of userInfoAll){
+                    if(this.items.length<3){
+                        this.items.push(
+                            {
+                                userName:a.userName,
+                                total:a.total
+                            })
+                    }
+                    this.cards.push({
+                        userName:a.userName,
+                        total:a.total
+                    })
+                }
+            }
+        )
+    }
 
 }
 </script>

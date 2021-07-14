@@ -97,6 +97,7 @@ export default {
                 axios.post('/userName',{token:this.$store.state.Token.token})
                 .then(response => {
                 this.$store.commit("addUser",response.data)
+                axios.post('/createTimeUser',{userId:response.data.userId})
               })
             .catch(error => {
               
@@ -118,13 +119,15 @@ export default {
     }
   },
   mounted(){
-      axios.get('/repeatName')
-      .then(response => {
-        this.$store.commit("addUser",response.data)
-      })
-      .catch(error => {
-        return error
-      })
+      if(!this.$store.state.user){
+        axios.get('/repeatName')
+        .then(response => {
+          this.$store.commit("addUser",response.data)
+        })
+        .catch(error => {
+          return error
+        })
+      }
   }
 }
 </script>

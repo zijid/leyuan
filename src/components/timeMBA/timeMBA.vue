@@ -78,6 +78,7 @@ import lyfooter from "../public/footer"
       },
       setPage(str){
         this.$router.push(str)
+        
       }
     },
     components:{
